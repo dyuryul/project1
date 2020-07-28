@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+        <link rel="stylesheet" href="{% static 'reviews/style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+   <h1>Review Detail</h1>
+   
+    {% if review.image %}
+       <div>
+           <img src='{{ review.image.url }}'></img>
+       </div>
+    {% endif %}   
+   
+   {% if review %}
+       <h2>작성자</h2>
+       <p>{{ review.author }}</p>
+       
+       <h2>본문</h2>
+       <p>{{ review.body }}</p>
+       
+       <h2>게시일</h2>
+       <p>{{ review.created_at }}</p>
+   {% else %}
+       <p>No review.</p>
+   {% endif %}
+   
+   <div>
+       좋아요 수: {{ review.liked_users.count }}
+   </div>
+   
+   {% if user.is_authenticated %}
+        {% if user in review.liked_user.all %}
+            <form action="{% url 'reviews:like' review.id %}" method="POST">
+                {% csrf_token %}
+                <button type='submit' class="btn btn-primary">LIKE</button>
+            </form>
+        {% else %}
+            <form action="{% url 'reviews:like' review.id %}" method="POST">
+                {% csrf_token %}
+                <button type='submit' class="btn btn-secondary">LIKE</button>
+            </form>
+        {% endif %}
+    {% endif %}
+   
+   <a href="{% url 'reviews:index' %}">목록</a>
+   {% if user == review.user %}
+       <a href="{% url 'reviews:edit' review.id %}">수정하기</a>
+       <a href="{% url 'reviews:delete' review.id %}">삭제하기</a>
+   {% endif %}
+{% endblock %}

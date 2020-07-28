@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+        <link rel="stylesheet" href="{% static 'reviews/style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+   <h1>New Review</h1>
+   
+   <form action="{% url 'reviews:create' %}" method="POST" enctype="multipart/form-data">
+       {% csrf_token %}
+       
+       
+       <h2>본문</h2>
+       <textarea cols=40 rows=10 name="body"></textarea>
+       
+       <input type="file" class="form-control-file" id="image" name="image">
+   
+       <br>
+       <input type="submit" value="작성하기" />
+   </form>
+   
+   <a href="{% url 'reviews:index' %}">목록</a>
+{% endblock %}

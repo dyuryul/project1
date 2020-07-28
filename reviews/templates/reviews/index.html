@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+        <link rel="stylesheet" href="{% static 'reviews/style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Georgetag Reviews</h1>
+    
+    {% if reviews %}
+       <table class="table">
+           <thead class="thead-dark">
+              <tr>
+               <th>#</th>
+               <th>작성자</th>
+               <th>본문</th>
+               <th>게시일</th>
+               <th>상세</th>
+              </tr>
+           </thead>
+           <tbody>
+               {% for review in reviews %}
+                   <tr>
+                       <th>{{ review.id }}</th>
+                       <td>{{ review.user.get_username }}</td>
+                       <td>{{ review.body }}</td>
+                       <td>{{ review.created_at }}</td>
+                       <td><a href="{% url 'reviews:detail' review.id %}">보기</a></td>
+                   </tr>
+              {% endfor %}   
+           </tbody>
+       </table>       
+    {% else %}
+        <p>No reviews.</p>
+    {% endif %}
+    
+    <a href="{% url 'reviews:new' %}">글쓰기</a>
+    </div>
+    
+    {% if dog %}
+        <div class="container">
+            <div calss="card">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img class="card-img" src="{{ dog }}"/>
+                    </div>
+                    <div class="col-md-8">
+                     <div class="card-body">
+                      <h5 class="card-title">강아지를 보고 싶다면?</h5>
+                      <p class="card-text">Dog Api를 황용합니다.</p>
+                     </div> 
+                    </div>    
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <a href="{% url 'reviews:youtube' %}">테스트입니다.</a>
+    
+{% endblock %}

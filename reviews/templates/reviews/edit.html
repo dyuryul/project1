@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+        <link rel="stylesheet" href="{% static 'reviews/style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+   <h1>Edit review</h1>
+   {% if review.image %}
+       <div>
+           <img src="{{ review.image.url }}"></img>
+       </div>
+   {% endif %}
+   <form action="{% url 'reviews:update' review.id %}" method="POST" enctype="multipart/form-data">
+       {% csrf_token %}
+       
+       <h2>본문</h2>
+       <textarea cols=40 rows=10 name="body">{{ review.body }}</textarea>
+   
+       <input type="file" class="form-control-file" id="image" name="image">
+   
+   
+       <br>
+       <input type="submit" value="수정하기" />
+   </form>
+   
+   <a href="{% url 'reviews:index' %}">목록</a>
+{% endblock %}
